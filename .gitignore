@@ -1,0 +1,9 @@
+node_modules/
+npm-debug.log
+.DS_Store
+.env
+
+# local tooling and logs
+.impeccable/
+*.log
+.env

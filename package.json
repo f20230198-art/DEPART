@@ -1,0 +1,22 @@
+{
+  "name": "debugged-evolution",
+  "version": "1.0.0",
+  "description": "Fast-paced pattern-recognition and interactive debugging arcade game for CS workshops",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test:load": "node scripts/load_test.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "qrcode": "^1.5.3",
+    "socket.io": "^4.7.5"
+  },
+  "devDependencies": {
+    "socket.io-client": "^4.8.4"
+  }
+}

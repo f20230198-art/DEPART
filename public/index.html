@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#FFF6DC">
+  <title>DEBUGGED | 3-Minute Tech Arcade</title>
+  <meta name="description" content="A 3-minute rapid-fire Python, SQL and logic quiz for CS freshers.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preload" href="fonts/caveat-brush-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/patrick-hand-sc-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/code-theme.css">
+</head>
+<body>
+
+  <!-- Shared doodle sprite: the DEBUGGED bug. Face is driven by CSS variables so it can react to answers. -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="bug" viewBox="0 0 120 124">
+        <g stroke="#14110F" stroke-width="4" stroke-linecap="round" fill="none">
+          <path d="M26 72 L10 80"/><path d="M26 90 L10 102"/><path d="M94 72 L110 80"/><path d="M94 90 L110 102"/>
+          <path d="M46 108 L42 121"/><path d="M74 108 L78 121"/>
+          <path d="M48 26 C42 13 34 10 29 14"/><path d="M72 26 C78 13 86 10 91 14"/>
+        </g>
+        <circle cx="29" cy="14" r="5" fill="#14110F"/><circle cx="91" cy="14" r="5" fill="#14110F"/>
+        <path d="M60 22 C93 20 104 54 99 84 C95 110 79 116 60 116 C41 116 25 110 21 84 C16 54 27 20 60 22Z"
+              fill="#2DD4BF" stroke="#14110F" stroke-width="4" stroke-linejoin="round"/>
+        <circle cx="40" cy="98" r="6" fill="#FF6FAE"/><circle cx="82" cy="100" r="7" fill="#FF6FAE"/><circle cx="62" cy="106" r="4.5" fill="#FF6FAE"/>
+        <path d="M86 62 L93 55 M88 73 L97 64 M88 84 L96 76" stroke="#14110F" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+        <circle cx="44" cy="52" r="14" fill="#fff" stroke="#14110F" stroke-width="3.5"/>
+        <circle cx="76" cy="52" r="14" fill="#fff" stroke="#14110F" stroke-width="3.5"/>
+        <!-- neutral -->
+        <g style="opacity:var(--f-n,1)">
+          <circle cx="46" cy="54" r="5.5" fill="#14110F"/><circle cx="78" cy="54" r="5.5" fill="#14110F"/>
+          <path d="M51 80 Q60 87 69 80" stroke="#14110F" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+        </g>
+        <!-- happy -->
+        <g style="opacity:var(--f-h,0)">
+          <path d="M35 56 Q44 43 53 56" stroke="#14110F" stroke-width="4" stroke-linecap="round" fill="#fff"/>
+          <path d="M67 56 Q76 43 85 56" stroke="#14110F" stroke-width="4" stroke-linecap="round" fill="#fff"/>
+          <path d="M47 76 Q60 96 73 76 Z" fill="#14110F" stroke="#14110F" stroke-width="3" stroke-linejoin="round"/>
+        </g>
+        <!-- oops -->
+        <g style="opacity:var(--f-o,0)">
+          <circle cx="44" cy="55" r="3.2" fill="#14110F"/><circle cx="76" cy="55" r="3.2" fill="#14110F"/>
+          <path d="M51 87 Q60 77 69 87" stroke="#14110F" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+          <path d="M96 40 Q102 50 96 54 Q90 50 96 40Z" fill="#7DD3FC" stroke="#14110F" stroke-width="2.4"/>
+        </g>
+      </symbol>
+    </defs>
+  </svg>
+
+  <div class="app-container">
+
+    <!-- SCREEN 1: WELCOME / JOIN -->
+    <div id="screen-welcome" class="screen active">
+      <header class="welcome-hero">
+        <div class="hero-row">
+          <svg class="mascot mascot-lg" viewBox="0 0 120 124" role="img" aria-label="DEBUGGED bug mascot"><use href="#bug"/></svg>
+          <div class="hero-text">
+            <h1 class="logo"><span class="logo-word">DEBUGGED</span></h1>
+            <!-- EDIT HERE: department / college line -->
+            <p class="dept-note">CS Department Orientation</p>
+          </div>
+        </div>
+        <p class="game-tagline">Something is broken. Find it fast.</p>
+      </header>
+
+      <div class="sheet welcome-form">
+        <div class="field-group">
+          <label class="form-label" for="player-name">Your name on the board</label>
+          <input type="text" id="player-name" class="field" placeholder="e.g. Aarav_21 or RollNo" maxlength="15" autofocus autocomplete="off" autocapitalize="off" spellcheck="false">
+          <div id="username-error" class="input-error-msg" role="alert">Please enter a valid username.</div>
+        </div>
+
+        <div class="field-group">
+          <span class="form-label" id="avatar-label">Pick a face</span>
+          <div class="avatar-selector-peeps" id="avatar-picker" role="group" aria-labelledby="avatar-label">
+            <!-- Open Peeps avatars populated by player.js -->
+          </div>
+        </div>
+
+        <button id="btn-start-game" class="btn-marker" type="button">
+          <span>START 3-MIN BLITZ</span>
+          <i data-lucide="arrow-right" style="width: 22px; height: 22px;"></i>
+        </button>
+
+        <div class="welcome-foot">
+          <button id="btn-sound-toggle-welcome" class="sound-toggle-btn" type="button">
+            <span id="sound-icon-welcome"><i data-lucide="volume-2" style="width: 16px; height: 16px;"></i></span>
+            <span>Sound ON</span>
+          </button>
+        </div>
+      </div>
+
+      <ol class="howto" aria-label="How it works">
+        <li><b>Tap</b> the right answer. Python, SQL and puzzles.</li>
+        <li><b>Streaks</b> multiply points and earn <b>lifelines</b>.</li>
+        <li><b>3 right</b> in a row: harder. <b>3 wrong</b>: easier.</li>
+      </ol>
+
+      <p class="ladder">Climb from SCRIPT KIDDIE to SYNTAX GOD</p>
+    </div>
+
+    <!-- SCREEN 1b: LOBBY (group start) -->
+    <div id="screen-lobby" class="screen">
+      <div class="sheet lobby-card">
+        <svg class="mascot mascot-lg" viewBox="0 0 120 124" role="img" aria-label="DEBUGGED bug mascot"><use href="#bug"/></svg>
+        <h2 id="lobby-title" class="lobby-title">YOU'RE IN!</h2>
+        <p id="lobby-name" class="lobby-name"></p>
+        <p id="lobby-message" class="lobby-message">Waiting for the host to start. Keep this screen open.</p>
+        <div class="lobby-count"><b id="lobby-count">0</b> ready to play</div>
+        <ul class="lobby-tips">
+          <li>3 minutes, tap the right answer.</li>
+          <li>A streak of 5 earns a lifeline.</li>
+          <li>Watch for golden questions and boss rounds.</li>
+        </ul>
+        <button id="btn-lobby-back" class="btn-outline" type="button">Change name or face</button>
+      </div>
+    </div>
+
+    <!-- SCREEN 2: ACTIVE GAMEPLAY -->
+    <div id="screen-game" class="screen">
+      <div class="game-hud">
+        <div class="hud-top-bar">
+          <div class="score-display">
+            <span class="score-label">SCORE</span>
+            <span id="hud-score" class="score-val">0</span>
+          </div>
+
+          <div class="timer-container" role="timer" aria-label="Time left">
+            <div class="timer-circle">
+              <svg viewBox="0 0 46 46" aria-hidden="true">
+                <circle class="timer-bg" cx="23" cy="23" r="20" />
+                <circle id="hud-timer-progress" class="timer-progress" cx="23" cy="23" r="20" />
+              </svg>
+              <span id="hud-timer-val" class="timer-val">3:00</span>
+            </div>
+          </div>
+
+          <div class="hud-right">
+            <button id="btn-sound-toggle-game" class="sound-toggle-btn icon-only" type="button" aria-label="Toggle sound">
+              <span id="sound-icon-game"><i data-lucide="volume-2" style="width: 16px; height: 16px;"></i></span>
+            </button>
+          </div>
+        </div>
+
+        <div class="hud-sub-bar">
+          <div id="hud-combo" class="combo-badge">
+            <span id="combo-flame"><i data-lucide="flame" style="width: 16px; height: 16px;"></i></span>
+            <span>COMBO x<span id="combo-val">1</span></span>
+          </div>
+          <div id="hud-tier" class="tier-badge">
+            <span id="tier-icon"><i data-lucide="terminal" style="width: 15px; height: 15px;"></i></span>
+            <span id="tier-name">SCRIPT KIDDIE</span>
+          </div>
+        </div>
+
+        <div class="xp-bar-container" aria-hidden="true">
+          <div id="hud-xp-fill" class="xp-bar-fill"></div>
+        </div>
+      </div>
+
+      <div id="challenge-box" class="challenge-box">
+        <div id="challenge-banner" class="challenge-banner" hidden></div>
+        <div class="challenge-header">
+          <div id="challenge-tag" class="challenge-title-tag">
+            <i data-lucide="bug" style="width: 14px; height: 14px;"></i>
+            <span>SPOT THE BUG</span>
+          </div>
+          <div id="challenge-instruction" class="challenge-instruction">Tap the broken line!</div>
+        </div>
+
+        <div id="challenge-body" class="challenge-body">
+          <!-- Rendered by player.js -->
+        </div>
+
+        <div id="feedback-overlay" class="feedback-overlay" aria-live="polite">+10 PERFECT!</div>
+      </div>
+
+      <div class="lifelines" id="lifelines" role="group" aria-label="Lifelines. Earn one every 5 streak.">
+        <button id="ll-fifty" class="lifeline" type="button" disabled>
+          <i data-lucide="target" style="width: 18px; height: 18px;"></i>
+          <span class="ll-name">50:50</span><b class="ll-count">0</b>
+        </button>
+        <button id="ll-skip" class="lifeline" type="button" disabled>
+          <i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i>
+          <span class="ll-name">SKIP</span><b class="ll-count">0</b>
+        </button>
+        <button id="ll-time" class="lifeline" type="button" disabled>
+          <i data-lucide="timer" style="width: 18px; height: 18px;"></i>
+          <span class="ll-name">+10s</span><b class="ll-count">0</b>
+        </button>
+      </div>
+
+      <div class="coach" aria-hidden="true">
+        <svg class="mascot" viewBox="0 0 120 124"><use href="#bug"/></svg>
+        <div class="coach-bubble"></div>
+      </div>
+    </div>
+
+    <!-- SCREEN 3: GAME OVER & SUMMARY -->
+    <div id="screen-gameover" class="screen">
+      <div class="sheet gameover-card">
+        <div class="gameover-head">
+          <svg class="mascot mascot-md" viewBox="0 0 120 124" aria-hidden="true"><use href="#bug"/></svg>
+          <h2 class="gameover-title">ROUND COMPLETE</h2>
+        </div>
+
+        <div id="high-score-banner" class="high-score-banner" style="display: none;">NEW PERSONAL BEST!</div>
+
+        <div class="final-score-box">
+          <div class="final-score-label">Final score</div>
+          <div id="final-score-num" class="final-score-val">0</div>
+        </div>
+
+        <div id="final-tier-badge" class="final-tier-pill">
+          <span id="final-tier-icon"><i data-lucide="flame" style="width: 18px; height: 18px;"></i></span>
+          <span id="final-tier-title">10x ENGINEER</span>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-box stat-streak">
+            <div id="final-max-combo" class="stat-num">x1</div>
+            <div class="stat-label">Best streak</div>
+          </div>
+          <div class="stat-box stat-acc">
+            <div id="final-accuracy" class="stat-num">100%</div>
+            <div class="stat-label">Accuracy</div>
+          </div>
+          <div class="stat-box stat-bugs">
+            <div id="final-bugs-fixed" class="stat-num">0</div>
+            <div class="stat-label">Bugs squashed</div>
+          </div>
+          <div class="stat-box stat-rank">
+            <div id="final-rank-val" class="stat-num">#1</div>
+            <div class="stat-label">Room rank</div>
+          </div>
+        </div>
+
+        <button id="btn-play-again" class="btn-marker" type="button">
+          <i data-lucide="refresh-cw" style="width: 20px; height: 20px;"></i>
+          <span>PLAY AGAIN</span>
+        </button>
+
+        <button id="btn-switch-profile" class="btn-outline" type="button">Change name or face</button>
+
+        <section class="mobile-leaderboard-preview" aria-label="Live leaderboard">
+          <div class="mini-lb-head">
+            <span class="mini-lb-title">
+              <i data-lucide="trophy" style="width: 18px; height: 18px;"></i>
+              LIVE LEADERBOARD
+            </span>
+            <span id="player-mobile-lb-count" class="mini-lb-count"></span>
+          </div>
+          <div id="player-mobile-lb-list" class="mini-lb-list">
+            <!-- Rendered by player.js -->
+          </div>
+        </section>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="countdown-overlay" class="countdown-overlay" hidden aria-live="assertive">
+    <div id="countdown-num" class="countdown-num">5</div>
+    <div class="countdown-sub">Get ready!</div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="js/icons.js"></script>
+  <script src="js/avatars.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/confetti.js"></script>
+  <script src="js/challenges.js"></script>
+  <script src="js/player.js"></script>
+</body>
+</html>

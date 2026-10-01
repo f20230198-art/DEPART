@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: debugged-orientation
+    runtime: node
+    plan: free
+    region: singapore        # closest Render region to India
+    buildCommand: npm install
+    startCommand: node server.js
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: MOD_KEY          # moderator PIN for /admin and the projector buttons
+        generateValue: true   # Render makes a random one; read it in Dashboard > Environment

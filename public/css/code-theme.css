@@ -1,0 +1,117 @@
+/* ==========================================================================
+   DEBUGGED - code on paper
+   Code boxes, tap-the-line, imposter cards and syntax colours.
+   ========================================================================== */
+
+.code-container,
+.imposter-code-text,
+.challenge-body > .code-container[style] {
+  font-variant-ligatures: none;
+  font-feature-settings: 'liga' 0, 'calt' 0;
+}
+
+.code-container {
+  width: 100%;
+  background: #fff;
+  border: var(--line);
+  border-radius: var(--wobble-s);
+  overflow: hidden;
+}
+
+.code-header {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.8rem;
+  background: var(--paper-deep);
+  border-bottom: 2px solid var(--ink);
+}
+
+.code-dot { width: 0.7rem; height: 0.7rem; border: 2px solid var(--ink); border-radius: 50%; display: inline-block; }
+.dot-red { background: var(--pink); }
+.dot-yellow { background: var(--yellow); }
+.dot-green { background: var(--teal); }
+
+.code-filename { margin-left: 0.4rem; font-family: var(--font-mono); font-size: 0.78rem; font-weight: 500; color: var(--ink-soft); }
+
+.code-body { padding: 0.3rem 0; }
+
+.code-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  min-height: 2.7rem;
+  padding: 0.5rem 0.8rem;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+  font-weight: 500;
+  line-height: 1.5;
+  transition: background-color 0.12s;
+}
+.code-line:hover { background: var(--yellow-soft); }
+.code-line.is-reveal { outline: 3px dashed var(--teal-ink); outline-offset: -3px; }
+.code-line + .code-line { border-top: 1px dashed var(--ink-faint); }
+
+.line-num { flex: none; min-width: 1.1rem; text-align: right; color: var(--ink-soft); opacity: 0.8; user-select: none; }
+.line-content { flex: 1; min-width: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+
+/* output-prediction / fill-the-blank code sits in a plain container */
+.challenge-body > .code-container[style] {
+  padding: 0.8rem 1rem !important;
+  font-size: 1rem !important;
+  line-height: 1.7 !important;
+  font-weight: 500;
+  white-space: pre-wrap;
+}
+
+/* --------------------------------------------------------------------------
+   Imposter cards
+   -------------------------------------------------------------------------- */
+.imposter-grid { display: grid; grid-template-columns: 1fr; gap: 0.65rem; }
+
+.imposter-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 3.6rem;
+  padding: 0.6rem 2.8rem 0.6rem 0.9rem;
+  background: #fff;
+  border: var(--line);
+  border-radius: var(--wobble-s);
+  cursor: pointer;
+  transition: transform 0.12s var(--ease-out), background-color 0.15s;
+}
+.imposter-card:nth-child(even) { border-radius: var(--wobble-a); }
+.imposter-card:hover { background: var(--yellow-soft); }
+.imposter-card:active { transform: scale(0.98); }
+.imposter-code-text { font-family: var(--font-mono); font-size: 0.92rem; font-weight: 500; line-height: 1.45; overflow-wrap: anywhere; }
+
+/* --------------------------------------------------------------------------
+   Flow diagram (legacy question type, kept for the quiz renderer)
+   -------------------------------------------------------------------------- */
+.flow-diagram-container { display: flex; flex-direction: column; align-items: center; gap: 0.35rem; padding: 0.6rem 0; }
+.flow-node {
+  padding: 0.35rem 1rem;
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: var(--wobble-s);
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+.flow-node.client { background: var(--teal-soft); }
+.flow-node.server { background: var(--pink-soft); }
+.flow-node.question { background: var(--yellow-soft); }
+.flow-arrow { font-family: var(--font-display); font-size: 1.4rem; line-height: 1; }
+
+/* --------------------------------------------------------------------------
+   Syntax colours (all >= 4.5:1 on white)
+   -------------------------------------------------------------------------- */
+.tok-comment { color: #5E564D; font-style: italic; }
+.tok-str { color: #0B7A6C; }
+.tok-kw { color: #B3125A; font-weight: 700; }
+.tok-bool { color: #6D28D9; font-weight: 700; }
+.tok-num { color: #A04A05; }
+.tok-prop { color: #1D4ED8; }
+.tok-tag { color: #B3125A; }

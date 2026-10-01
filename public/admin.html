@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>DEBUGGED | Admin</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-page">
+
+  <!-- PIN gate -->
+  <main id="admin-gate" class="admin-gate">
+    <form id="gate-form" class="sheet gate-card">
+      <h1 class="logo"><span class="logo-word">ADMIN</span></h1>
+      <p class="gate-note">Enter the moderator PIN to control the round.</p>
+      <input id="gate-pin" class="field" type="password" inputmode="text" autocomplete="off" placeholder="Moderator PIN" aria-label="Moderator PIN">
+      <div id="gate-error" class="input-error-msg" role="alert">Wrong PIN.</div>
+      <button class="btn-marker" type="submit"><span>OPEN PANEL</span></button>
+    </form>
+  </main>
+
+  <!-- Dashboard -->
+  <div id="admin-panel" class="admin-wrap" hidden>
+
+    <header class="admin-head">
+      <h1 class="logo"><span class="logo-word">DEBUGGED</span> <span class="admin-tag">admin</span></h1>
+      <div id="admin-conn" class="chip chip-ok">Connected</div>
+    </header>
+
+    <div id="admin-toast" class="admin-toast" role="status" aria-live="polite"></div>
+
+    <section class="sheet round-card" aria-label="Round control">
+      <div class="round-status">
+        <div>
+          <div class="round-phase" id="round-phase">LOBBY</div>
+          <div class="round-sub" id="round-sub">Waiting for players to join.</div>
+        </div>
+        <div class="round-clock" id="round-clock" aria-live="off"></div>
+      </div>
+
+      <div class="control-row">
+        <div class="control-block">
+          <span class="control-label">How rounds start</span>
+          <div class="seg" role="group" aria-label="Round mode">
+            <button id="mode-group" class="seg-btn" type="button">Group start</button>
+            <button id="mode-free" class="seg-btn" type="button">Free play</button>
+          </div>
+        </div>
+        <div class="control-block">
+          <span class="control-label">New players</span>
+          <div class="seg" role="group" aria-label="Registration">
+            <button id="reg-open" class="seg-btn" type="button">Can join</button>
+            <button id="reg-closed" class="seg-btn" type="button">Closed</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-row">
+        <button id="act-start" class="btn-marker" type="button"><span>START ROUND</span></button>
+        <button id="act-end" class="btn-outline" type="button">End round now</button>
+        <button id="act-new" class="btn-outline" type="button">New round (back to lobby)</button>
+        <button id="act-reset" class="btn-outline danger" type="button">Reset leaderboard</button>
+      </div>
+    </section>
+
+    <section class="stat-row" aria-label="Counts">
+      <div class="stat-tile"><b id="n-online">0</b><span>online</span></div>
+      <div class="stat-tile"><b id="n-lobby">0</b><span>in lobby</span></div>
+      <div class="stat-tile"><b id="n-playing">0</b><span>playing</span></div>
+      <div class="stat-tile"><b id="n-finished">0</b><span>finished</span></div>
+      <div class="stat-tile"><b id="n-waiting">0</b><span>waiting next</span></div>
+    </section>
+
+    <section class="sheet players-card" aria-label="Players">
+      <div class="players-head">
+        <h2>Players</h2>
+        <input id="player-search" class="field" type="search" placeholder="Find a name..." autocomplete="off" aria-label="Search players">
+      </div>
+      <div id="players-list" class="players-list">
+        <div class="empty-note">Nobody has joined yet.</div>
+      </div>
+    </section>
+
+    <section class="sheet banned-card" aria-label="Banned">
+      <h2>Banned</h2>
+      <div id="banned-list" class="banned-list"><div class="empty-note">No bans.</div></div>
+    </section>
+
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
